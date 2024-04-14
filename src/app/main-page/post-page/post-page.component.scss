@@ -1,0 +1,14 @@
+section{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+#post {
+    height: 200px;
+    width: inherit;
+}
+#postContainer {
+    width: 600px;
+}
