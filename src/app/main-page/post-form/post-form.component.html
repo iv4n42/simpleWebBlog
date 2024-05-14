@@ -1,18 +1,18 @@
 <section>
     <h1 id="formHeader">Make Your Post</h1>
     <div id="formContainer">
-        <form #postForm ="ngForm" (ngSubmit)="onSubmit(postForm)">
+        <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <mat-form-field style="width: 300px;">
-                    <input matInput type="text" placeholder="Title" name="user" ngModel>
+                    <input matInput type="text" placeholder="Title" formControlName="title">
                 </mat-form-field>
                 <button mat-flat-button color="primary">Post</button>
             </div>
             <mat-form-field style="width: 600px;">
-                <textarea matInput placeholder="Description" cdkTextareaAutosize name="title" ngModel></textarea>
+                <textarea matInput placeholder="Description" cdkTextareaAutosize formControlName="description"></textarea>
             </mat-form-field>
             <mat-form-field style="width: 600px;display: block;">
-                <textarea matInput placeholder="Start Writing"  cdkTextareaAutosize name="description" ngModel></textarea>
+                <textarea matInput placeholder="Start Writing"  cdkTextareaAutosize formControlName="text"></textarea>
             </mat-form-field>
           
         </form>
