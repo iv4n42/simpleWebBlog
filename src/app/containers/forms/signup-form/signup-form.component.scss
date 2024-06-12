@@ -1,0 +1,27 @@
+form {
+    width: 70%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    justify-content: space-around;
+    row-gap: 20px;
+    margin: 30px;
+    padding: 10px;
+}
+
+form .mat-mdc-form-field  {
+    width: 100%;
+}
+
+// .fullname mat-form-field {
+//     margin-right: 20px;
+// }
+
+// form button {
+//     width: 30%;
+// }
+
+.mat-mdc-card {
+    margin: 20px;
+    width: 50%;
+}

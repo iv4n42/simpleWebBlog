@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { HttpService } from '../../services/http.service';
+import { HttpService } from '../../shared/services/http.service';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MainPageComponent } from './main-page/main-page.component';
-import { SignPageComponent } from './sign-page/sign-page.component';
 
 
 @Component({
@@ -9,7 +8,6 @@ import { SignPageComponent } from './sign-page/sign-page.component';
   standalone: true,
   imports: [RouterOutlet,
             MainPageComponent,
-            SignPageComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
