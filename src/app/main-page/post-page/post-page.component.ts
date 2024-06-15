@@ -23,8 +23,8 @@ export class PostPageComponent implements OnInit {
   allPosts :any= [];
   getAll = "posts";
   ngOnInit() {
-    this._httpService.getPosts(this.getAll).subscribe((data : any ) =>{
-      this.allPosts = data
-    })
+    // this._httpService.getPosts(this.getAll).subscribe((data : any ) =>{
+    //   this.allPosts = data
+    // })
   }
 }
