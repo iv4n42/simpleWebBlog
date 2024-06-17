@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-main-page',
+    selector: 'app-main',
     standalone: true,
     imports: [
         PostListingComponent,
@@ -31,9 +31,6 @@ import { CommonModule } from '@angular/common';
     styleUrl: './main.component.scss',
 })
 export class MainPageComponent {
-    sidenavOpened: boolean = true;
-
-    toggleSidenav() {
-        throw new Error('Method not implemented.');
-    }
+    sidenavOpened: boolean = false;
+    loggedIn: boolean = false;
 }

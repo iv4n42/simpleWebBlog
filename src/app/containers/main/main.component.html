@@ -1,6 +1,6 @@
 <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side" opened>
-        <div id="sidButtons">
+    <mat-sidenav #sidenav mode="side" [opened]="sidenavOpened">
+        <div *ngIf="loggedIn" id="sidButtons">
             <button mat-icon-button (click)="sidenav.close()">
                 <mat-icon
                     ><span class="material-symbols-outlined">
@@ -8,19 +8,19 @@
                     </span></mat-icon
                 >
             </button>
-            <button mat-icon-button routerLink="/post-page">
+            <button mat-icon-button routerLink="/posts">
                 <mat-icon>
                     <span class="material-symbols-outlined">
                         manage_search
                     </span>
                 </mat-icon>
             </button>
-            <button mat-icon-button routerLink="/post-form">
+            <button mat-icon-button routerLink="/create-post">
                 <mat-icon>
                     <span class="material-symbols-outlined"> send </span>
                 </mat-icon>
             </button>
-            <button mat-icon-button routerLink="/user-page">
+            <button mat-icon-button routerLink="/user-profile">
                 <mat-icon>
                     <span class="material-symbols-outlined"> person </span>
                 </mat-icon>
@@ -29,7 +29,10 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <section style="height: 800px">
-            <app-tool-bar (openSideNavEvent)="sidenav.open()"></app-tool-bar>
+            <app-tool-bar
+                [loggedIn]="loggedIn"
+                (openSideNavEvent)="sidenav.open()"
+            ></app-tool-bar>
             <router-outlet></router-outlet>
         </section>
     </mat-sidenav-content>
