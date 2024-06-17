@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { PostPageComponent } from './post-page/post-page.component';
-import { PostFormComponent } from '../containers/forms/post-form/post-form.component';
-import { UserPageComponent } from './user-page/user-page.component';
-import { ToolBarComponent } from '../components/UI/tool-bar/tool-bar.component';
+import { PostListingComponent } from '../../components/post-listing/post-listing.component';
+import { PostFormComponent } from '../forms/post-form/post-form.component';
+import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
+import { ToolBarComponent } from '../../components/UI/tool-bar/tool-bar.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,9 +15,9 @@ import { CommonModule } from '@angular/common';
     selector: 'app-main-page',
     standalone: true,
     imports: [
-        PostPageComponent,
+        PostListingComponent,
         PostFormComponent,
-        UserPageComponent,
+        UserProfileComponent,
         ToolBarComponent,
         MatSidenavModule,
         MatListModule,
@@ -27,8 +27,8 @@ import { CommonModule } from '@angular/common';
         RouterModule,
         CommonModule,
     ],
-    templateUrl: './main-page.component.html',
-    styleUrl: './main-page.component.scss',
+    templateUrl: './main.component.html',
+    styleUrl: './main.component.scss',
 })
 export class MainPageComponent {
     sidenavOpened: boolean = true;

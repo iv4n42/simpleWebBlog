@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MainPageComponent } from './main-page/main-page.component';
+import { MainPageComponent } from './containers/main/main.component';
 
 
 @Component({

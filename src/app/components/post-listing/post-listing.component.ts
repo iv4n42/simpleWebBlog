@@ -4,7 +4,6 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
-import { error } from 'console';
 
 
 @Component({
@@ -15,10 +14,10 @@ import { error } from 'console';
             MatDividerModule,
             MatIconModule
   ],
-  templateUrl: './post-page.component.html',
-  styleUrl: './post-page.component.scss'
+  templateUrl: './post-listing.component.html',
+  styleUrl: './post-listing.component.scss'
 })
-export class PostPageComponent implements OnInit {
+export class PostListingComponent implements OnInit {
   constructor(private _httpService : HttpService){}
   allPosts :any= [];
   getAll = "posts";
