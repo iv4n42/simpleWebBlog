@@ -6,4 +6,5 @@ export interface User {
     lastname: string;
     dateOfBirth: Date;
     address?: string;
+    jwt: string
 }

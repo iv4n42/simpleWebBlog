@@ -1,11 +1,20 @@
-<mat-toolbar color="primary" style="align-items: center;justify-content: space-between;">
-    <span>MY APP</span>
-        <mat-form-field style="height: 65px;margin-top: 23px;">
-            <mat-icon matIconPrefix>
-                <span class="material-symbols-outlined">
-                    search
-                    </span>
-            </mat-icon>
-            <input matInput type="search" placeholder="Search" >
-        </mat-form-field>
+<mat-toolbar
+    color="primary"
+    style="height: 80px; gap: 30px;"
+>
+    <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with menu icon"
+        (click)="emitOpenSideNav()"
+    >
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>Deep Daily Insights</span>
+    <mat-form-field style="margin-top: 20px;">
+        <mat-icon matIconPrefix>
+            <span class="material-symbols-outlined"> search </span>
+        </mat-icon>
+        <input matInput type="search" placeholder="Search" />
+    </mat-form-field>
 </mat-toolbar>

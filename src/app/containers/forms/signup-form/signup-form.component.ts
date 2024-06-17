@@ -13,8 +13,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserSignin } from '../../../shared/models/auth/user-signin';
 import { UserSignup } from '../../../shared/models/auth/user-signup';
+import { exhaustMap } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-signup-form',
@@ -34,8 +35,6 @@ export class SignupFormComponent implements OnInit {
     signUpForm!: FormGroup;
     passwordPattern: string =
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$';
-    // username: string = '';
-    // email: string = '';
 
     @Output() signupBtnClickEvent: EventEmitter<void> = new EventEmitter();
 
@@ -65,6 +64,27 @@ export class SignupFormComponent implements OnInit {
             dateOfBirth: ['', [Validators.required]],
             address: [''],
         });
+
+        this._authService
+            .getUserSignupInfo()
+            .pipe(
+                exhaustMap((userData: UserSignup) => {
+                    return this._authService.signup(userData);
+                })
+            )
+            .subscribe({
+                next: (result) => {
+                    console.log(result);
+                },
+                error: (error: HttpErrorResponse) => {
+                    console.log(
+                        `Error on form submission ${error.message} with status ${error.status}`
+                    );
+                },
+                complete: () => {
+                    this.signUpForm.reset();
+                },
+            });
     }
 
     onSignupBtnClick() {
@@ -93,20 +113,9 @@ export class SignupFormComponent implements OnInit {
             firstname: this.signUpForm.get('firstname')?.value as string,
             lastname: this.signUpForm.get('lastname')?.value as string,
             dateOfBirth: this.signUpForm.get('dateOfBirth')?.value as Date,
+            address: this.signUpForm.get('address')?.value as string,
         };
 
-        this._authService.signup(userInfo).subscribe({
-                next: () => {
-                    console.log('Account created');
-                },
-                // error: (error: HttpErrorResponse) => {
-                //     console.log(
-                //         `Error on form submission ${error.message} with status ${error.status}`
-                //     );
-                // },
-                // complete: () => {
-                //     this.backdropClickHandler();
-                // },
-        });
+        this._authService.submitUserSignupInfo(userInfo);
     }
 }

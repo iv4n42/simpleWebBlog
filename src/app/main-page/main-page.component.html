@@ -1,41 +1,36 @@
 <mat-sidenav-container>
-        <mat-sidenav mode="side" opened>
-             <span>MY APP</span>
-              <div id="sidButtons">
-                <button mat-icon-button routerLink="/post-page">
-                  <mat-icon>
+    <mat-sidenav #sidenav mode="side" opened>
+        <div id="sidButtons">
+            <button mat-icon-button (click)="sidenav.close()">
+                <mat-icon
+                    ><span class="material-symbols-outlined">
+                        keyboard_arrow_left
+                    </span></mat-icon
+                >
+            </button>
+            <button mat-icon-button routerLink="/post-page">
+                <mat-icon>
                     <span class="material-symbols-outlined">
-                      manage_search
-                      </span>
-                  </mat-icon>
-                </button>
-              
-              
-                <button mat-icon-button routerLink="/post-form">
-                  <mat-icon>
-                    <span class="material-symbols-outlined">
-                      send
-                      </span>
-                  </mat-icon>
-                </button>
-                <button mat-icon-button routerLink="/user-page">
-                  <mat-icon>
-                    <span class="material-symbols-outlined">
-                      person
-                      </span>
-                  </mat-icon>
-                </button>
-              </div>   
-        </mat-sidenav>
-        <mat-sidenav-content>
-          <section style="height: 800px;">
-            <app-tool-bar></app-tool-bar>
+                        manage_search
+                    </span>
+                </mat-icon>
+            </button>
+            <button mat-icon-button routerLink="/post-form">
+                <mat-icon>
+                    <span class="material-symbols-outlined"> send </span>
+                </mat-icon>
+            </button>
+            <button mat-icon-button routerLink="/user-page">
+                <mat-icon>
+                    <span class="material-symbols-outlined"> person </span>
+                </mat-icon>
+            </button>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <section style="height: 800px">
+            <app-tool-bar (openSideNavEvent)="sidenav.open()"></app-tool-bar>
             <router-outlet></router-outlet>
-          </section>
-        </mat-sidenav-content>
+        </section>
+    </mat-sidenav-content>
 </mat-sidenav-container>
-    
-
-   
-
-

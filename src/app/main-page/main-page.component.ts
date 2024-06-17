@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-main-page',
@@ -24,8 +25,15 @@ import { MatIconModule } from '@angular/material/icon';
         MatIconModule,
         RouterOutlet,
         RouterModule,
+        CommonModule,
     ],
     templateUrl: './main-page.component.html',
     styleUrl: './main-page.component.scss',
 })
-export class MainPageComponent {}
+export class MainPageComponent {
+    sidenavOpened: boolean = true;
+
+    toggleSidenav() {
+        throw new Error('Method not implemented.');
+    }
+}
