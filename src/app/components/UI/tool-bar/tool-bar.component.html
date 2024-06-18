@@ -1,6 +1,6 @@
 <mat-toolbar
     color="primary"
-    style="height: 80px; gap: 30px;"
+    style="display: flex; flex-direction: row; height: 80px; gap: 50px"
 >
     <button
         *ngIf="loggedIn"
@@ -12,10 +12,14 @@
         <mat-icon>menu</mat-icon>
     </button>
     <span>Deep Daily Insights</span>
-    <mat-form-field style="margin-top: 20px;">
+    <mat-form-field *ngIf="loggedIn" style="margin-top: 20px; width: 30%">
         <mat-icon matIconPrefix>
             <span class="material-symbols-outlined"> search </span>
         </mat-icon>
         <input matInput type="search" placeholder="Search" />
     </mat-form-field>
+    <div *ngIf="!loggedIn" id="auth-buttons">
+        <button mat-raised-button routerLink="signin">Sign In</button>
+        <button mat-raised-button routerLink="signup"> Sign Up</button>
+    </div>
 </mat-toolbar>

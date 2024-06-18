@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -14,8 +14,9 @@ import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserSignup } from '../../../shared/models/auth/user-signup';
-import { exhaustMap } from 'rxjs';
+import { Subscription, exhaustMap, finalize, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signup-form',
@@ -31,7 +32,8 @@ import { HttpErrorResponse } from '@angular/common/http';
     templateUrl: './signup-form.component.html',
     styleUrl: './signup-form.component.scss',
 })
-export class SignupFormComponent implements OnInit {
+export class SignupFormComponent implements OnInit, OnDestroy {
+    authServiceSubscription!: Subscription;
     signUpForm!: FormGroup;
     passwordPattern: string =
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$';
@@ -41,8 +43,13 @@ export class SignupFormComponent implements OnInit {
     constructor(
         private _fb: FormBuilder,
         private _authService: AuthService,
+        private _router: Router,
         private _snackBar: MatSnackBar
     ) {}
+
+    ngOnDestroy(): void {
+        this.authServiceSubscription.unsubscribe();
+    }
 
     ngOnInit(): void {
         this.signUpForm = this._fb.group({
@@ -65,24 +72,21 @@ export class SignupFormComponent implements OnInit {
             address: [''],
         });
 
-        this._authService
-            .getUserSignupInfo()
+        this.authServiceSubscription = this._authService
+            .signupValues
             .pipe(
-                exhaustMap((userData: UserSignup) => {
+                switchMap((userData: UserSignup) => {
                     return this._authService.signup(userData);
                 })
             )
             .subscribe({
-                next: (result) => {
-                    console.log(result);
+                next: () => {
+                    this._router.navigate([""]);
                 },
                 error: (error: HttpErrorResponse) => {
                     console.log(
                         `Error on form submission ${error.message} with status ${error.status}`
                     );
-                },
-                complete: () => {
-                    this.signUpForm.reset();
                 },
             });
     }
@@ -109,13 +113,13 @@ export class SignupFormComponent implements OnInit {
         const userInfo: UserSignup = {
             username: this.signUpForm.get('username')?.value as string,
             email: this.signUpForm.get('email')?.value as string,
-            password: this.signUpForm.get('password')?.value as string,
+            password: password,
             firstname: this.signUpForm.get('firstname')?.value as string,
             lastname: this.signUpForm.get('lastname')?.value as string,
             dateOfBirth: this.signUpForm.get('dateOfBirth')?.value as Date,
             address: this.signUpForm.get('address')?.value as string,
         };
 
-        this._authService.submitUserSignupInfo(userInfo);
+        this._authService.signupValues.next(userInfo);
     }
 }
