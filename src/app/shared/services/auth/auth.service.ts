@@ -1,34 +1,34 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { API_ROUTES, BASE_API_URL } from '../../api.routes';
 import { UserSignup } from '../../models/auth/user-signup';
-import { User } from '../../models/auth/user';
 import { UserSignin } from '../../models/auth/user-signin';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AuthService implements OnInit {
-    private jwt!: string | null;
-
+export class AuthService {
     successfulSignin: Subject<void> = new Subject();
     signupValues: Subject<UserSignup> = new Subject();
     signinValues: Subject<UserSignin> = new Subject();
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(
+        private _httpClient: HttpClient,
+        private _jwtHelperService: JwtHelperService
+    ) {}
 
-    ngOnInit(): void {
-        this.jwt = localStorage.getItem('userJWT');
-    }
+    getUserToken(): string | null {
+        const token = localStorage.getItem('userJWT');
 
-    getUserToken() {
-        return this.jwt;
+        if (token) console.log(this._jwtHelperService.decodeToken(token));
+
+        return token;
     }
 
     setUserToken(token: string) {
-        this.jwt = token;
-        localStorage.setItem('userJWT', this.jwt);
+        localStorage.setItem('userJWT', token);
     }
 
     emitSuccessfulSigninEvent() {
@@ -36,14 +36,14 @@ export class AuthService implements OnInit {
     }
 
     signup(userData: UserSignup): Observable<object> {
-        return this.httpClient.post(
+        return this._httpClient.post(
             `${BASE_API_URL}/${API_ROUTES.auth.signup}`,
             userData
         );
     }
 
     signin(userData: UserSignin): Observable<object> {
-        const jwt = this.httpClient.post<object>(
+        const jwt = this._httpClient.post<object>(
             `${BASE_API_URL}/${API_ROUTES.auth.signin}`,
             userData
         );
