@@ -5,6 +5,7 @@ import { accountGuard } from './shared/guards/account/account.guard';
 export const routes: Routes = [
     {
         path: '',
+        pathMatch: 'full',
         loadComponent: () =>
             import('./components/entry/entry.component').then(
                 (x) => x.EntryComponent
