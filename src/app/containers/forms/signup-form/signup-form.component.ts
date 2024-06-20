@@ -81,7 +81,7 @@ export class SignupFormComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: () => {
-                    this._router.navigate([""]);
+                    this._router.navigate(["/"]);
                 },
                 error: (error: HttpErrorResponse) => {
                     console.log(

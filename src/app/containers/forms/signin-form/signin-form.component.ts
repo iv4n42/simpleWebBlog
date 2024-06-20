@@ -95,8 +95,8 @@ export class SigninFormComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (result: any) => {
                     this._authService.setUserToken(result.userToken);
-                    this._authService.emitSuccessfulSigninEvent();
-                    this._router.navigate(['']);
+                    this._authService.onSuccessfulSignin();
+                    this._router.navigate(['/posts']);
                 },
             });
     }

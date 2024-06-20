@@ -26,18 +26,13 @@ export class ToolBarComponent {
     @Input() loggedIn!: boolean;
 
     @Output() openSideNavEvent: EventEmitter<void> = new EventEmitter();
-    @Output() signupEvent: EventEmitter<void> = new EventEmitter();
-    @Output() signinEvent: EventEmitter<void> = new EventEmitter();
+    @Output() logoutEvent: EventEmitter<void> = new EventEmitter();
 
-    emitOpenSideNav(): void {
+    onMenuIconBtnClick(): void {
         this.openSideNavEvent.emit();
     }
 
-    emitSignupEvent(): void {
-        this.signupEvent.emit();
-    }
-
-    emitSigninEvent(): void {
-        this.signinEvent.emit();
+    onLogoutBtnClick() {
+        this.logoutEvent.emit();
     }
 }

@@ -20,18 +20,14 @@ export class AuthService {
     ) {}
 
     getUserToken(): string | null {
-        const token = localStorage.getItem('userJWT');
-
-        if (token) console.log(this._jwtHelperService.decodeToken(token));
-
-        return token;
+        return localStorage.getItem('userJWT');
     }
 
     setUserToken(token: string) {
         localStorage.setItem('userJWT', token);
     }
 
-    emitSuccessfulSigninEvent() {
+    onSuccessfulSignin() {
         this.successfulSignin.next();
     }
 
@@ -48,5 +44,13 @@ export class AuthService {
             userData
         );
         return jwt;
+    }
+
+    logout(): void {
+        localStorage.removeItem('userJWT');
+    }
+
+    isAuthenticated(): boolean {
+        return localStorage.getItem('userJWT') !== null;
     }
 }

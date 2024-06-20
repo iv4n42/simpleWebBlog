@@ -46,7 +46,13 @@ export class MainPageComponent implements OnInit {
             next: () => {
                 this.loggedIn = true;
                 this.sidenavOpened = true;
-            }
+            },
         });
+    }
+
+    logoutUser(): void {
+        this._authService.logout();
+        this.loggedIn = false;
+        this.sidenavOpened = false;
     }
 }

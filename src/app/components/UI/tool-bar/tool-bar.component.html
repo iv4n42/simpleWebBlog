@@ -7,7 +7,7 @@
         mat-icon-button
         class="example-icon"
         aria-label="Example icon-button with menu icon"
-        (click)="emitOpenSideNav()"
+        (click)="onMenuIconBtnClick()"
     >
         <mat-icon>menu</mat-icon>
     </button>
@@ -18,8 +18,12 @@
         </mat-icon>
         <input matInput type="search" placeholder="Search" />
     </mat-form-field>
+
     <div *ngIf="!loggedIn" id="auth-buttons">
         <button mat-raised-button routerLink="signin">Sign In</button>
-        <button mat-raised-button routerLink="signup"> Sign Up</button>
+        <button mat-raised-button routerLink="signup">Sign Up</button>
+    </div>
+    <div *ngIf="loggedIn" id="auth-buttons">
+        <button mat-raised-button (click)="onLogoutBtnClick()">Log out</button>
     </div>
 </mat-toolbar>

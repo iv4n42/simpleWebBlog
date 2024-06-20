@@ -32,6 +32,7 @@
             <app-tool-bar
                 [loggedIn]="loggedIn"
                 (openSideNavEvent)="sidenav.open()"
+                (logoutEvent)="logoutUser()"
             ></app-tool-bar>
             <router-outlet></router-outlet>
         </section>
