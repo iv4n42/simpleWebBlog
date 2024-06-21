@@ -1,19 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MainPageComponent } from './main-page/main-page.component';
-import { SignPageComponent } from './sign-page/sign-page.component';
-
+import { MainPageComponent } from './containers/main/main.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet,
-            MainPageComponent,
-            SignPageComponent,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    standalone: true,
+    imports: [RouterOutlet, MainPageComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'simpleWebBlog';
+    title = 'simpleWebBlog';
 }

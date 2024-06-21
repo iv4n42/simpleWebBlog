@@ -5,9 +5,9 @@ import {MatTabsModule} from '@angular/material/tabs';
   selector: 'app-user-page',
   standalone: true,
   imports: [MatTabsModule],
-  templateUrl: './user-page.component.html',
-  styleUrl: './user-page.component.scss'
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.scss'
 })
-export class UserPageComponent {
+export class UserProfileComponent {
 
 }
