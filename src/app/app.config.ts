@@ -1,25 +1,23 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { withFetch } from '@angular/common/http';
+import { withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { JwtModule } from '@auth0/angular-jwt';
+import { provideMaterialTagsDefaultOptions } from './shared/material.config';
+import { provideAppInterceptors } from './shared/app.interceptors';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
         provideClientHydration(),
         provideAnimationsAsync('animations'),
-        provideHttpClient(withFetch()),
+        provideHttpClient(withFetch(), withInterceptorsFromDi()),
         provideNativeDateAdapter(),
-        {
-            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-            useValue: { appearance: 'outline', hideRequiredMarker: true },
-        },
+        provideMaterialTagsDefaultOptions(),
         importProvidersFrom([
             JwtModule.forRoot({
                 config: {
@@ -27,5 +25,6 @@ export const appConfig: ApplicationConfig = {
                 },
             }),
         ]),
+        provideAppInterceptors()
     ],
 };

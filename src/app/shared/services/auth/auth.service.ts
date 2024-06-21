@@ -50,7 +50,7 @@ export class AuthService {
         localStorage.removeItem('userJWT');
     }
 
-    isAuthenticated(): boolean {
+    isUserAuthenticated(): boolean {
         return localStorage.getItem('userJWT') !== null;
     }
 }
