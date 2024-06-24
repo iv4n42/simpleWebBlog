@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { PostListingComponent } from '../../components/post-listing/post-listing.component';
 import { PostFormComponent } from '../forms/post-form/post-form.component';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { ToolBarComponent } from '../../components/UI/tool-bar/tool-bar.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,7 +32,7 @@ import { AuthService } from '../../shared/services/auth/auth.service';
     styleUrl: './main.component.scss',
 })
 export class MainPageComponent implements OnInit {
-    sidenavOpened!: boolean;
+    @ViewChild('sidenav') sidenav!: MatSidenav;
     loggedIn!: boolean;
 
     constructor(private _authService: AuthService, private _router: Router) {}
@@ -40,12 +40,11 @@ export class MainPageComponent implements OnInit {
     ngOnInit() {
         const userToken = this._authService.getUserToken();
         this.loggedIn = !!userToken;
-        this.sidenavOpened = !!userToken;
 
         this._authService.successfulSigninSubject.subscribe({
             next: () => {
                 this.loggedIn = true;
-                this.sidenavOpened = true;
+                this.sidenav.opened = true;
                 this._router.navigate(['/posts']);
             },
         });
@@ -53,7 +52,7 @@ export class MainPageComponent implements OnInit {
         this._authService.logoutSubject.subscribe({
             next: () => {
                 this.loggedIn = false;
-                this.sidenavOpened = false;
+                this.sidenav.opened = false;
                 this._router.navigate(['']);
             },
         });
@@ -61,7 +60,5 @@ export class MainPageComponent implements OnInit {
 
     logoutUser(): void {
         this._authService.logout();
-        this.loggedIn = false;
-        this.sidenavOpened = false;
     }
 }

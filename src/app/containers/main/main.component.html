@@ -1,13 +1,6 @@
 <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side" [opened]="sidenavOpened">
+    <mat-sidenav #sidenav mode="side" [opened]="loggedIn">
         <div *ngIf="loggedIn" id="sidButtons">
-            <button mat-icon-button (click)="sidenav.close()">
-                <mat-icon
-                    ><span class="material-symbols-outlined">
-                        keyboard_arrow_left
-                    </span></mat-icon
-                >
-            </button>
             <button mat-icon-button routerLink="/posts">
                 <mat-icon>
                     <span class="material-symbols-outlined">
@@ -31,7 +24,8 @@
         <section style="height: 800px">
             <app-tool-bar
                 [loggedIn]="loggedIn"
-                (openSideNavEvent)="sidenav.open()"
+                [sidenavOpened]="sidenav.opened"
+                (toggleSidenavEvent)="sidenav.toggle()"
                 (logoutEvent)="logoutUser()"
             ></app-tool-bar>
             <router-outlet></router-outlet>

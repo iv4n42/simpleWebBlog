@@ -9,7 +9,9 @@
         aria-label="Example icon-button with menu icon"
         (click)="onMenuIconBtnClick()"
     >
-        <mat-icon>menu</mat-icon>
+        <mat-icon>{{
+            sidenavOpened ? "keyboard_arrow_left" : "menu"
+        }}</mat-icon>
     </button>
     <span>Deep Daily Insights</span>
     <mat-form-field *ngIf="loggedIn" style="margin-top: 20px; width: 30%">

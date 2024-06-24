@@ -24,12 +24,13 @@ import { RouterModule } from '@angular/router';
 })
 export class ToolBarComponent {
     @Input() loggedIn!: boolean;
+    @Input() sidenavOpened!: boolean;
 
-    @Output() openSideNavEvent: EventEmitter<void> = new EventEmitter();
+    @Output() toggleSidenavEvent: EventEmitter<void> = new EventEmitter();
     @Output() logoutEvent: EventEmitter<void> = new EventEmitter();
 
     onMenuIconBtnClick(): void {
-        this.openSideNavEvent.emit();
+        this.toggleSidenavEvent.emit();
     }
 
     onLogoutBtnClick() {
