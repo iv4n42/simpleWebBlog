@@ -10,7 +10,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
     providedIn: 'root',
 })
 export class AuthService {
-    successfulSignin: Subject<void> = new Subject();
+    successfulSigninSubject: Subject<void> = new Subject();
+    logoutSubject: Subject<void> = new Subject();
     signupValues: Subject<UserSignup> = new Subject();
     signinValues: Subject<UserSignin> = new Subject();
 
@@ -23,12 +24,9 @@ export class AuthService {
         return localStorage.getItem('userJWT');
     }
 
-    setUserToken(token: string) {
+    onSuccessfulSignin(token: string) {
         localStorage.setItem('userJWT', token);
-    }
-
-    onSuccessfulSignin() {
-        this.successfulSignin.next();
+        this.successfulSigninSubject.next();
     }
 
     signup(userData: UserSignup): Observable<object> {
@@ -48,6 +46,7 @@ export class AuthService {
 
     logout(): void {
         localStorage.removeItem('userJWT');
+        this.logoutSubject.next();
     }
 
     isUserAuthenticated(): boolean {

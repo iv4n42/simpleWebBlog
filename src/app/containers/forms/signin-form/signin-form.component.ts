@@ -1,8 +1,4 @@
-import {
-    Component,
-    OnDestroy,
-    OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -13,12 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-    EMPTY,
-    Subscription,
-    catchError,
-    switchMap,
-} from 'rxjs';
+import { EMPTY, Subscription, catchError, switchMap } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -94,9 +85,7 @@ export class SigninFormComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (result: any) => {
-                    this._authService.setUserToken(result.userToken);
-                    this._authService.onSuccessfulSignin();
-                    this._router.navigate(['/posts']);
+                    this._authService.onSuccessfulSignin(result.userToken);
                 },
             });
     }

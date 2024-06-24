@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { PostListingComponent } from '../../components/post-listing/post-listing.component';
 import { PostFormComponent } from '../forms/post-form/post-form.component';
@@ -35,17 +35,26 @@ export class MainPageComponent implements OnInit {
     sidenavOpened!: boolean;
     loggedIn!: boolean;
 
-    constructor(private _authService: AuthService) {}
+    constructor(private _authService: AuthService, private _router: Router) {}
 
     ngOnInit() {
         const userToken = this._authService.getUserToken();
         this.loggedIn = !!userToken;
         this.sidenavOpened = !!userToken;
 
-        this._authService.successfulSignin.subscribe({
+        this._authService.successfulSigninSubject.subscribe({
             next: () => {
                 this.loggedIn = true;
                 this.sidenavOpened = true;
+                this._router.navigate(['/posts']);
+            },
+        });
+
+        this._authService.logoutSubject.subscribe({
+            next: () => {
+                this.loggedIn = false;
+                this.sidenavOpened = false;
+                this._router.navigate(['']);
             },
         });
     }
