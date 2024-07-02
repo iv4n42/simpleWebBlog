@@ -33,13 +33,14 @@ import { AuthService } from '../../shared/services/auth/auth.service';
 })
 export class MainPageComponent implements OnInit {
     @ViewChild('sidenav') sidenav!: MatSidenav;
+
     loggedIn!: boolean;
 
     constructor(private _authService: AuthService, private _router: Router) {}
 
     ngOnInit() {
-        const userToken = this._authService.getUserToken();
-        this.loggedIn = !!userToken;
+        this.loggedIn = this._authService.isUserAuthenticated();
+        this._authService.getUserIdFromClaim();
 
         this._authService.successfulSigninSubject.subscribe({
             next: () => {

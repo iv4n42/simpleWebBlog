@@ -10,6 +10,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
     providedIn: 'root',
 })
 export class AuthService {
+    userId: string | null = null;
+
     successfulSigninSubject: Subject<void> = new Subject();
     logoutSubject: Subject<void> = new Subject();
     signupValues: Subject<UserSignup> = new Subject();
@@ -20,12 +22,24 @@ export class AuthService {
         private _jwtHelperService: JwtHelperService
     ) {}
 
+    isUserAuthenticated(): boolean {
+        return localStorage.getItem('userJWT') !== null;
+    }
+
     getUserToken(): string | null {
         return localStorage.getItem('userJWT');
     }
 
+    getUserIdFromClaim(): void {
+        const jwt = this.getUserToken();
+        if (!jwt) return;
+
+        this.userId = this._jwtHelperService.decodeToken(jwt)['Userid'];
+    }
+
     onSuccessfulSignin(token: string) {
         localStorage.setItem('userJWT', token);
+        this.getUserIdFromClaim();
         this.successfulSigninSubject.next();
     }
 
@@ -46,10 +60,7 @@ export class AuthService {
 
     logout(): void {
         localStorage.removeItem('userJWT');
+        this.userId = null;
         this.logoutSubject.next();
-    }
-
-    isUserAuthenticated(): boolean {
-        return localStorage.getItem('userJWT') !== null;
     }
 }

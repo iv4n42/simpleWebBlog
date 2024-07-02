@@ -5,4 +5,5 @@ export const API_ROUTES = {
         signup: 'auth/signup',
         signin: 'auth/signin',
     },
+    user: 'user'
 };

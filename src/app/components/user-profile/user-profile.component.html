@@ -12,13 +12,17 @@
                 </div>
                 <input
                     type="file"
+                    multiple
                     #fileInput
                     style="display: none"
-                    (click)="onSelectProfilePicture()"
+                    (change)="onSelectProfilePicture(fileInput.files)"
                 />
             </mat-card-title>
             <mat-card-subtitle style="font-size: xx-large">
-                <br />Ivan
+                <br /> {{user.username}}
+            </mat-card-subtitle>
+            <mat-card-subtitle style="font-size: large">
+                <br /> {{user.email}}
             </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
