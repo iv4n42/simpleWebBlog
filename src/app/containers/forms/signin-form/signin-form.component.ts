@@ -61,26 +61,9 @@ export class SigninFormComponent implements OnInit, OnDestroy {
         this.authServiceSubscription = this._authService.signinValues
             .pipe(
                 switchMap((userData: UserSignin) => {
-                    return this._authService.signin(userData).pipe(
-                        catchError((errResponse: HttpErrorResponse) => {
-                            const snackBarRef = this._snackBar.open(
-                                errResponse.error.message,
-                                'close'
-                            );
-
-                            const usernameControl =
-                                    this.signinForm.get('username'),
-                                passwordControl =
-                                    this.signinForm.get('password');
-
-                            snackBarRef.onAction().subscribe(() => {
-                                passwordControl?.reset();
-                                usernameControl?.reset();
-                            });
-
-                            return EMPTY;
-                        })
-                    );
+                    return this._authService.signin(userData, () => {
+                        this.signinForm.reset();
+                    });
                 })
             )
             .subscribe({

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import {
     FormBuilder,
+    FormControl,
     FormGroup,
     ReactiveFormsModule,
     Validators,
@@ -72,21 +73,17 @@ export class SignupFormComponent implements OnInit, OnDestroy {
             address: [''],
         });
 
-        this.authServiceSubscription = this._authService
-            .signupValues
+        this.authServiceSubscription = this._authService.signupValues
             .pipe(
                 switchMap((userData: UserSignup) => {
-                    return this._authService.signup(userData);
+                    return this._authService.signup(userData, () => {
+                        this.signUpForm.reset();
+                    });
                 })
             )
             .subscribe({
                 next: () => {
-                    this._router.navigate(["/"]);
-                },
-                error: (error: HttpErrorResponse) => {
-                    console.log(
-                        `Error on form submission ${error.message} with status ${error.status}`
-                    );
+                    this._router.navigate(['/']);
                 },
             });
     }
@@ -97,23 +94,23 @@ export class SignupFormComponent implements OnInit, OnDestroy {
                 'passwordConfirmation'
             ),
             password = passwordControl?.value as string,
-            passwordConfirmation = passwordConfirmationControl?.value as string;
+            passwordConfimation = passwordConfirmationControl?.value as string,
+            validPasswordConfirmation =
+                this._authService.validatePasswordConfirmation(
+                    password,
+                    passwordConfimation,
+                    () => {
+                        passwordControl?.reset();
+                        passwordConfirmationControl?.reset();
+                    }
+                );
 
-        if (password !== passwordConfirmation) {
-            const snackBarRef = this._snackBar.open(
-                'The passwords do not match.',
-                'close'
-            );
-            snackBarRef.onAction().subscribe(() => {
-                passwordControl?.reset();
-                passwordConfirmationControl?.reset();
-            });
-        }
+        if (!validPasswordConfirmation) return;
 
         const userInfo: UserSignup = {
             username: this.signUpForm.get('username')?.value as string,
             email: this.signUpForm.get('email')?.value as string,
-            password: password,
+            password: passwordControl?.value as string,
             firstname: this.signUpForm.get('firstname')?.value as string,
             lastname: this.signUpForm.get('lastname')?.value as string,
             dateOfBirth: this.signUpForm.get('dateOfBirth')?.value as Date,

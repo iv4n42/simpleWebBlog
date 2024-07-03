@@ -9,9 +9,10 @@ import {
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { EMPTY, Observable, catchError } from 'rxjs';
+import { EMPTY, Observable, catchError, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { API_ROUTES } from '../../api.routes';
+import { ErrorNotificationService } from '../../services/error-notification/error-notification.service';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
@@ -19,8 +20,8 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
         ...Object.values(API_ROUTES.auth),
     ];
     constructor(
-        private _snackBar: MatSnackBar,
         private _router: Router,
+        private _errorNotificationService: ErrorNotificationService,
         private _authService: AuthService
     ) {}
 
@@ -33,16 +34,16 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             catchError((errResponse: HttpErrorResponse) => {
                 if (errResponse.status === HttpStatusCode.Unauthorized) {
-                    const snackBarRef = this._snackBar.open(
-                        'Your session has expired, please sign in once again',
-                        'Close'
+                    this._errorNotificationService.notifyError(
+                        errResponse,
+                        () => {
+                            this._authService.logout();
+                            this._router.navigate(['/signin']);
+                        },
+                        'Your session has expired, please sign in once again'
                     );
-                    snackBarRef.onAction().subscribe(() => {
-                        this._authService.logout();
-                        this._router.navigate(['/signin']);
-                    });
                 }
-                return EMPTY;
+                return throwError(() => errResponse);
             })
         );
     }

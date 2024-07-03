@@ -1,10 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {
+    EMPTY,
+    EmptyError,
+    ErrorNotification,
+    Observable,
+    Subject,
+    catchError,
+} from 'rxjs';
 import { API_ROUTES, BASE_API_URL } from '../../api.routes';
 import { UserSignup } from '../../models/auth/user-signup';
 import { UserSignin } from '../../models/auth/user-signin';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ErrorNotificationService } from '../error-notification/error-notification.service';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +28,8 @@ export class AuthService {
 
     constructor(
         private _httpClient: HttpClient,
-        private _jwtHelperService: JwtHelperService
+        private _jwtHelperService: JwtHelperService,
+        private _errorNotificationService: ErrorNotificationService
     ) {}
 
     isUserAuthenticated(): boolean {
@@ -43,18 +53,26 @@ export class AuthService {
         this.successfulSigninSubject.next();
     }
 
-    signup(userData: UserSignup): Observable<object> {
-        return this._httpClient.post(
-            `${BASE_API_URL}/${API_ROUTES.auth.signup}`,
-            userData
-        );
+    signup(userData: UserSignup, onError: () => void): Observable<object> {
+        return this._httpClient
+            .post(`${BASE_API_URL}/${API_ROUTES.auth.signup}`, userData)
+            .pipe(
+                catchError((err) => {
+                    this._errorNotificationService.notifyError(err, onError);
+                    return EMPTY;
+                })
+            );
     }
 
-    signin(userData: UserSignin): Observable<object> {
-        const jwt = this._httpClient.post<object>(
-            `${BASE_API_URL}/${API_ROUTES.auth.signin}`,
-            userData
-        );
+    signin(userData: UserSignin, onError: () => void): Observable<object> {
+        const jwt = this._httpClient
+            .post<object>(`${BASE_API_URL}/${API_ROUTES.auth.signin}`, userData)
+            .pipe(
+                catchError((err) => {
+                    this._errorNotificationService.notifyError(err, onError);
+                    return EMPTY;
+                })
+            );
         return jwt;
     }
 
@@ -62,5 +80,19 @@ export class AuthService {
         localStorage.removeItem('userJWT');
         this.userId = null;
         this.logoutSubject.next();
+    }
+
+    validatePasswordConfirmation(
+        password: string,
+        passwordConfirmation: string,
+        onError: () => void
+    ): boolean {
+        if (password !== passwordConfirmation) {
+            const err = new Error('The passwords do not match');
+            this._errorNotificationService.notifyError(err, onError);
+            return false;
+        }
+
+        return true;
     }
 }

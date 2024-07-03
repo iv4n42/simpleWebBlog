@@ -19,10 +19,14 @@
                 />
             </mat-card-title>
             <mat-card-subtitle style="font-size: xx-large">
-                <br /> {{user.username}}
+                <ng-container *ngIf="user$ | async as user">
+                    <br />{{ user.username }}
+                </ng-container>
             </mat-card-subtitle>
             <mat-card-subtitle style="font-size: large">
-                <br /> {{user.email}}
+                <ng-container *ngIf="user$ | async as user">
+                    <br />{{ user.email }}
+                </ng-container>
             </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
