@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     EMPTY,
@@ -57,8 +57,8 @@ export class AuthService {
         return this._httpClient
             .post(`${BASE_API_URL}/${API_ROUTES.auth.signup}`, userData)
             .pipe(
-                catchError((err) => {
-                    this._errorNotificationService.notifyError(err, onError);
+                catchError((errResponse: HttpErrorResponse) => {
+                    this._errorNotificationService.notifyError(errResponse, onError);
                     return EMPTY;
                 })
             );
@@ -68,8 +68,8 @@ export class AuthService {
         const jwt = this._httpClient
             .post<object>(`${BASE_API_URL}/${API_ROUTES.auth.signin}`, userData)
             .pipe(
-                catchError((err) => {
-                    this._errorNotificationService.notifyError(err, onError);
+                catchError((errResponse: HttpErrorResponse) => {
+                    this._errorNotificationService.notifyError(errResponse, onError);
                     return EMPTY;
                 })
             );

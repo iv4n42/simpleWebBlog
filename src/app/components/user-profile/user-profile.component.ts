@@ -1,14 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UploadService } from '../../shared/services/upload/upload.service';
-import { EMPTY, Observable, catchError, empty, exhaustMap, forkJoin, tap } from 'rxjs';
+import { Observable, exhaustMap, map } from 'rxjs';
 import { User } from '../../shared/models/auth/user';
-import { HttpErrorResponse, HttpResponseBase } from '@angular/common/http';
 import { UserService } from '../../shared/services/domain/user/user.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../shared/services/auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { base64ToBlob } from '../../utils/file-management';
 
 @Component({
     selector: 'app-user-page',
@@ -19,12 +19,13 @@ import { CommonModule } from '@angular/common';
 })
 export class UserProfileComponent implements OnInit {
     user$: Observable<User>;
+    profilePictureUrl: string | SafeUrl = '../../../assets/162094261.jfif';
 
     constructor(
         private _uploadService: UploadService,
         private _userService: UserService,
         private _authService: AuthService,
-        private _snackBar: MatSnackBar
+        private _domSanitizer: DomSanitizer
     ) {
         this.user$ = this._userService.getUser(this._authService.userId!);
     }
@@ -32,23 +33,28 @@ export class UserProfileComponent implements OnInit {
     ngOnInit(): void {
         this._uploadService.uploadPictureSubject
             .pipe(
-                exhaustMap((file: File) => {
-                    return this._uploadService
-                        .uploadProfilePicture(file, this._authService.userId!)
-                        .pipe(
-                            catchError((errResponse: HttpErrorResponse) => {
-                                this._snackBar.open(
-                                    errResponse.error.message,
-                                    'close'
-                                );
-                                return EMPTY;
-                            })
-                        );
+                exhaustMap((picture: File) => {
+                    return this._uploadService.uploadProfilePicture(
+                        picture,
+                        this._authService.userId!
+                    );
+                }),
+                map((base64Picture: string) => {
+                    const pictureBlob = base64ToBlob(
+                            base64Picture,
+                            'image/jpeg'
+                        ),
+                        pictureBlobUrl =
+                            this._domSanitizer.bypassSecurityTrustUrl(
+                                URL.createObjectURL(pictureBlob)
+                            );
+
+                    return pictureBlobUrl;
                 })
             )
             .subscribe({
-                next: (value) => {
-                    console.log(value);
+                next: (pictureUrl: SafeUrl) => {
+                    this.profilePictureUrl = pictureUrl;
                 },
             });
     }

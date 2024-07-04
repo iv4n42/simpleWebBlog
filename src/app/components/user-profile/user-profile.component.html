@@ -4,8 +4,9 @@
             <mat-card-title>
                 <div class="pfp-container">
                     <img
-                        src="../../../assets/162094261.jfif"
+                        [src]="profilePictureUrl"
                         id="profilePicture"
+                        alt="User Profile Picture"
                         (click)="fileInput.click()"
                     />
                     <!-- <p class="pfp-tooltip">Select picture</p> -->

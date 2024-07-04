@@ -38,8 +38,6 @@ export class SigninFormComponent implements OnInit, OnDestroy {
     constructor(
         private _fb: FormBuilder,
         private _authService: AuthService,
-        private _router: Router,
-        private _snackBar: MatSnackBar
     ) {}
 
     ngOnDestroy(): void {

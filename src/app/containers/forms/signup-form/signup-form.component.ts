@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import {
     FormBuilder,
-    FormControl,
     FormGroup,
     ReactiveFormsModule,
     Validators,
@@ -15,8 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserSignup } from '../../../shared/models/auth/user-signup';
-import { Subscription, exhaustMap, finalize, switchMap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -44,8 +42,7 @@ export class SignupFormComponent implements OnInit, OnDestroy {
     constructor(
         private _fb: FormBuilder,
         private _authService: AuthService,
-        private _router: Router,
-        private _snackBar: MatSnackBar
+        private _router: Router
     ) {}
 
     ngOnDestroy(): void {
@@ -110,7 +107,7 @@ export class SignupFormComponent implements OnInit, OnDestroy {
         const userInfo: UserSignup = {
             username: this.signUpForm.get('username')?.value as string,
             email: this.signUpForm.get('email')?.value as string,
-            password: passwordControl?.value as string,
+            password: password,
             firstname: this.signUpForm.get('firstname')?.value as string,
             lastname: this.signUpForm.get('lastname')?.value as string,
             dateOfBirth: this.signUpForm.get('dateOfBirth')?.value as Date,
