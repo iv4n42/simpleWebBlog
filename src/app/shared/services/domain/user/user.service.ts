@@ -24,4 +24,17 @@ export class UserService {
                 })
             );
     }
+
+    getUserPfp(userId: string): Observable<string> {
+        return this._httpClient
+            .get<string>(
+                `${BASE_API_URL}/${API_ROUTES.user}/${userId}/getProfilePicture`
+            )
+            .pipe(
+                catchError((err) => {
+                    this._errorNotificationService.notifyError(err);
+                    return EMPTY;
+                })
+            );
+    }
 }
