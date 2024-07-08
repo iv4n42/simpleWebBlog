@@ -1,18 +1,40 @@
-<section>
-    <div id="userContainer">
-        <div id="userHeader">
-            <span style="font-size: xx-large;">Ivan</span>
-           <img src="../../../assets/162094261.jfif" id="profilePhoto">
-        </div>
-        <div>
+<section class="user-profile-card">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <div class="pfp-container">
+                    <img
+                        [src]="pfp"
+                        id="profilePicture"
+                        alt="User Profile Picture"
+                        (click)="fileInput.click()"
+                    />
+                    <!-- <p class="pfp-tooltip">Select picture</p> -->
+                </div>
+                <input
+                    type="file"
+                    multiple
+                    #fileInput
+                    style="display: none"
+                    (change)="onSelectProfilePicture(fileInput.files)"
+                />
+            </mat-card-title>
+            <mat-card-subtitle style="font-size: xx-large">
+                <ng-container *ngIf="user$ | async as user">
+                    <br />{{ user.username }}
+                </ng-container>
+            </mat-card-subtitle>
+            <mat-card-subtitle style="font-size: large">
+                <ng-container *ngIf="user$ | async as user">
+                    <br />{{ user.email }}
+                </ng-container>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
             <mat-tab-group>
-                <mat-tab label="My Posts"></mat-tab>
-                <mat-tab label="Readed"></mat-tab>
-                <mat-tab label="Notification"></mat-tab>
+                <mat-tab label="Activity"></mat-tab>
+                <mat-tab label="Followers/Following"></mat-tab>
             </mat-tab-group>
-        </div>
-    
-    </div>
+        </mat-card-content>
+    </mat-card>
 </section>
-
-

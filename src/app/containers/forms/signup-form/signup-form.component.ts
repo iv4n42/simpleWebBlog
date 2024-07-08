@@ -14,8 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserSignup } from '../../../shared/models/auth/user-signup';
-import { Subscription, exhaustMap, finalize, switchMap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -43,8 +42,7 @@ export class SignupFormComponent implements OnInit, OnDestroy {
     constructor(
         private _fb: FormBuilder,
         private _authService: AuthService,
-        private _router: Router,
-        private _snackBar: MatSnackBar
+        private _router: Router
     ) {}
 
     ngOnDestroy(): void {
@@ -72,21 +70,17 @@ export class SignupFormComponent implements OnInit, OnDestroy {
             address: [''],
         });
 
-        this.authServiceSubscription = this._authService
-            .signupValues
+        this.authServiceSubscription = this._authService.signupValues
             .pipe(
                 switchMap((userData: UserSignup) => {
-                    return this._authService.signup(userData);
+                    return this._authService.signup(userData, () => {
+                        this.signUpForm.reset();
+                    });
                 })
             )
             .subscribe({
                 next: () => {
-                    this._router.navigate(["/"]);
-                },
-                error: (error: HttpErrorResponse) => {
-                    console.log(
-                        `Error on form submission ${error.message} with status ${error.status}`
-                    );
+                    this._router.navigate(['/']);
                 },
             });
     }
@@ -97,18 +91,18 @@ export class SignupFormComponent implements OnInit, OnDestroy {
                 'passwordConfirmation'
             ),
             password = passwordControl?.value as string,
-            passwordConfirmation = passwordConfirmationControl?.value as string;
+            passwordConfimation = passwordConfirmationControl?.value as string,
+            validPasswordConfirmation =
+                this._authService.validatePasswordConfirmation(
+                    password,
+                    passwordConfimation,
+                    () => {
+                        passwordControl?.reset();
+                        passwordConfirmationControl?.reset();
+                    }
+                );
 
-        if (password !== passwordConfirmation) {
-            const snackBarRef = this._snackBar.open(
-                'The passwords do not match.',
-                'close'
-            );
-            snackBarRef.onAction().subscribe(() => {
-                passwordControl?.reset();
-                passwordConfirmationControl?.reset();
-            });
-        }
+        if (!validPasswordConfirmation) return;
 
         const userInfo: UserSignup = {
             username: this.signUpForm.get('username')?.value as string,
