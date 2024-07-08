@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UploadService } from '../../shared/services/upload/upload.service';
-import { Observable, Subject, exhaustMap, filter, map } from 'rxjs';
+import { Observable, Subject, exhaustMap, filter, map, takeUntil } from 'rxjs';
 import { User } from '../../shared/models/auth/user';
 import { UserService } from '../../shared/services/domain/user/user.service';
 import { AuthService } from '../../shared/services/auth/auth.service';
@@ -17,9 +17,11 @@ import { base64ToBlob } from '../../utils/file-management';
     templateUrl: './user-profile.component.html',
     styleUrl: './user-profile.component.scss',
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
+    private _destroy$: Subject<void> = new Subject();
     user$: Observable<User>;
-    pfpSubject: Subject<SafeUrl | string> = new Subject();
+    pfp$: Subject<SafeUrl | string> = new Subject();
+
     pfp: SafeUrl | string = '../../../assets/user-pfp-placeholder.jpg';
 
     constructor(
@@ -49,7 +51,7 @@ export class UserProfileComponent implements OnInit {
                             );
 
                     return pictureBlobUrl;
-                }),
+                })
             )
             .subscribe({
                 next: (pfpUrl: SafeUrl) => {
@@ -73,13 +75,19 @@ export class UserProfileComponent implements OnInit {
                             );
 
                     return pictureBlobUrl;
-                })
+                }),
+                takeUntil(this._destroy$)
             )
             .subscribe({
                 next: (pfpUrl: SafeUrl) => {
                     this.pfp = pfpUrl;
                 },
             });
+    }
+
+    ngOnDestroy(): void {
+        this._destroy$.next();
+        this._destroy$.complete();
     }
 
     onSelectProfilePicture(files: FileList | null) {
