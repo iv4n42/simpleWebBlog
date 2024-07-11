@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { PostListingComponent } from '../../components/post-listing/post-listing.component';
 import { PostFormComponent } from '../forms/post-form/post-form.component';
@@ -24,7 +24,6 @@ import { AuthService } from '../../shared/services/auth/auth.service';
         MatListModule,
         MatButtonModule,
         MatIconModule,
-        RouterOutlet,
         RouterModule,
         CommonModule,
     ],

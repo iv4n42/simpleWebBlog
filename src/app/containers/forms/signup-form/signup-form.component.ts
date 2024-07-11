@@ -12,7 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../../shared/services/auth/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserSignup } from '../../../shared/models/auth/user-signup';
 import { Subscription, switchMap } from 'rxjs';
 import { Router } from '@angular/router';

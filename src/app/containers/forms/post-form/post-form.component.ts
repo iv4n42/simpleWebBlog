@@ -1,17 +1,26 @@
-import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { HttpService } from '../../../shared/services/http.service';
+import { Component, OnInit } from '@angular/core';
+import {
+    FormControl,
+    ReactiveFormsModule,
+    FormGroup,
+    FormBuilder,
+    Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { MatButtonModule } from '@angular/material/button';
-import { title } from 'node:process';
+import { PostService } from '../../../shared/services/domain/post/post.service';
+import { CreatePost } from '../../../shared/models/domain/post/CreatePost';
+import { exhaustAll, exhaustMap, map } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
     selector: 'app-post-form',
     standalone: true,
     imports: [
         MatFormFieldModule,
+        MatCardModule,
         MatInputModule,
         CdkTextareaAutosize,
         MatButtonModule,
@@ -20,28 +29,32 @@ import { title } from 'node:process';
     templateUrl: './post-form.component.html',
     styleUrl: './post-form.component.scss',
 })
-export class PostFormComponent {
-    data: any = {};
-    option = { responseType: 'text' };
-    constructor(private _postMaker: HttpService) {}
-    postForm = new FormGroup({
-        user: new FormControl('Prueba'),
-        title: new FormControl(''),
-        description: new FormControl(''),
-        text: new FormControl(''),
-    });
-    onSubmit() {
-        this.data = this.postForm.value;
-        this._postMaker
-            .makePost(this.data, this.option)
-            .subscribe((data: any) => {
-                this.postForm.patchValue({
-                    user: '',
-                    title: '',
-                    description: '',
-                    text: '',
-                });
-                alert(data);
-            });
+export class PostFormComponent implements OnInit {
+    postForm!: FormGroup;
+
+    constructor(private _postService: PostService, private _fb: FormBuilder) {}
+
+    ngOnInit(): void {
+        this._postService.postValues
+            .pipe(
+                exhaustMap((newPost) => {
+                    return this._postService.createPost(newPost);
+                })
+            )
+            .subscribe({});
+
+        this.postForm = this._fb.group({
+            title: ['', [Validators.required]],
+            content: ['', [Validators.required]],
+        });
+    }
+
+    onSubmitPostBtnClick() {
+        const newPost: CreatePost = {
+            title: this.postForm.get('title')?.value as string,
+            content: this.postForm.get('content')?.value as string,
+        };
+
+        this._postService.postValues.next(newPost);
     }
 }

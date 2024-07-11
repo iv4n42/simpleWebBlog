@@ -9,12 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { EMPTY, Subscription, catchError, switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth/auth.service';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserSignin } from '../../../shared/models/auth/user-signin';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-signin-form',
