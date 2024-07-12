@@ -10,7 +10,8 @@ import { Post } from '../../../models/domain/post/Post';
     providedIn: 'root',
 })
 export class PostService {
-    postValues: Subject<CreatePost> = new Subject();
+    publishPostValues: Subject<CreatePost> = new Subject();
+    postAsDraftValues: Subject<CreatePost> = new Subject();
 
     constructor(
         private _httpClient: HttpClient,
@@ -39,9 +40,9 @@ export class PostService {
             );
     }
 
-    createPost(post: CreatePost): Observable<object> {
+    createPost(post: CreatePost, asDraft: boolean): Observable<object> {
         return this._httpClient
-            .post(`${BASE_API_URL}/${API_ROUTES.post}`, post)
+            .post(`${BASE_API_URL}/${API_ROUTES.post}?asDraft=${asDraft}`, post)
             .pipe(
                 catchError((errResponse: HttpErrorResponse) => {
                     this._errorNotificationService.notifyError(errResponse);

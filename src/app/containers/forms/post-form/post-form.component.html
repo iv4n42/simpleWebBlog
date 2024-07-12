@@ -2,14 +2,12 @@
     <mat-card>
         <mat-card-header>
             <mat-card-title>
-                Show people what are your insights today
+                What are your insights for today, sir ?
             </mat-card-title>
-            <mat-card-subtitle>
-                Remember publishing your post after creating it
-            </mat-card-subtitle>
+            <mat-card-subtitle> Surprise the community ! </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <form [formGroup]="postForm" (ngSubmit)="onSubmitPostBtnClick()">
+            <form [formGroup]="postForm">
                 <mat-form-field>
                     <input
                         matInput
@@ -23,12 +21,27 @@
                         matInput
                         placeholder="Start writing"
                         cdkTextareaAutosize
-                        formControlName="text"
+                        formControlName="content"
+                        rows="14"
                     ></textarea>
                 </mat-form-field>
                 <div class="post-form-buttons">
-                    <button mat-flat-button color="primary">Save as draft post</button>
-                    <button mat-flat-button color="primary">Publish post</button>
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        [disabled]="postForm.invalid"
+                        (click)="onSavePostAsDraftBtnClick()"
+                    >
+                        Save post as draft
+                    </button>
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        [disabled]="postForm.invalid"
+                        (click)="onPublishPostBtnClick()"
+                    >
+                        Publish post
+                    </button>
                 </div>
             </form>
         </mat-card-content>
