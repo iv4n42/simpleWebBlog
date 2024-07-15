@@ -21,8 +21,8 @@ import { AbstractControl, FormControl } from '@angular/forms';
 export class AuthService {
     userId: string | null = null;
 
-    successfulSigninSubject: Subject<void> = new Subject();
-    logoutSubject: Subject<void> = new Subject();
+    successfulSigninValue: Subject<void> = new Subject();
+    logoutValue: Subject<void> = new Subject();
     signupValues: Subject<UserSignup> = new Subject();
     signinValues: Subject<UserSignin> = new Subject();
 
@@ -50,7 +50,7 @@ export class AuthService {
     onSuccessfulSignin(token: string) {
         localStorage.setItem('userJWT', token);
         this.getUserIdFromClaim();
-        this.successfulSigninSubject.next();
+        this.successfulSigninValue.next();
     }
 
     signup(userData: UserSignup, onError: () => void): Observable<object> {
@@ -79,7 +79,7 @@ export class AuthService {
     logout(): void {
         localStorage.removeItem('userJWT');
         this.userId = null;
-        this.logoutSubject.next();
+        this.logoutValue.next();
     }
 
     validatePasswordConfirmation(

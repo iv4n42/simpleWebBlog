@@ -4,11 +4,15 @@ section{
     flex-direction: column;
 }
 
+// #post {
+//     width: 400px;
+//     margin: 20px;
+// }
 
-#post {
-    height: 150px;
-    width: 400px;
+.mat-grid-tile {
+    margin: 20px;
 }
-#postContainer {
-    width: 600px;
+
+.mat-grid-list {
+    width: 800px;
 }

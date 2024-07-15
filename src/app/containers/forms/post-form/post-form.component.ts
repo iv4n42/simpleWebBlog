@@ -42,7 +42,11 @@ export class PostFormComponent implements OnInit, OnDestroy {
                 }),
                 takeUntil(this._destroy$)
             )
-            .subscribe({});
+            .subscribe({
+                next: () => {
+                    this._postService.successfulPostValue.next();
+                },
+            });
 
         this._postService.postAsDraftValues
             .pipe(
@@ -51,7 +55,11 @@ export class PostFormComponent implements OnInit, OnDestroy {
                 }),
                 takeUntil(this._destroy$)
             )
-            .subscribe({});
+            .subscribe({
+                next: () => {
+                    this._postService.successfulPostValue.next();
+                },
+            });
 
         this.postForm = this._fb.group({
             title: ['', [Validators.required]],
