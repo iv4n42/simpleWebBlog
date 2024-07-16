@@ -44,7 +44,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: () => {
-                    this._postService.successfulPostValue.next();
+                    this._postService.postCreated.next();
                 },
             });
 
@@ -57,7 +57,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: () => {
-                    this._postService.successfulPostValue.next();
+                    this._postService.postCreated.next();
                 },
             });
 

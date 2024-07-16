@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { PostListingComponent } from '../../components/post-listing/post-listing.component';
+import { PostListingComponent } from '../../presentational/post-listing/post-listing.component';
 import { PostFormComponent } from '../forms/post-form/post-form.component';
-import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
-import { ToolBarComponent } from '../../components/UI/tool-bar/tool-bar.component';
+import { UserProfileComponent } from '../../presentational/user-profile/user-profile.component';
+import { ToolBarComponent } from '../../presentational/UI/tool-bar/tool-bar.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
@@ -62,7 +62,7 @@ export class MainPageComponent implements OnInit {
             },
         });
 
-        this._postService.successfulPostValue.subscribe({
+        this._postService.postCreated.subscribe({
             next: () => {
                 this._router.navigate(['/posts']);
             },

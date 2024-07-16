@@ -10,7 +10,9 @@ import { Post } from '../../../models/domain/post/Post';
     providedIn: 'root',
 })
 export class PostService {
-    successfulPostValue: Subject<void> = new Subject();
+    postCreated: Subject<void> = new Subject();
+
+    getPostValues: Subject<string> = new Subject();
     publishPostValues: Subject<CreatePost> = new Subject();
     postAsDraftValues: Subject<CreatePost> = new Subject();
 
