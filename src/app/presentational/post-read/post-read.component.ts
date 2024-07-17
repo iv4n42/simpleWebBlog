@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PostService } from '../../../shared/services/domain/post/post.service';
-import { Post } from '../../../shared/models/domain/post/Post';
+import { PostService } from '../../shared/services/domain/post/post.service';
+import { Post } from '../../shared/models/domain/post/Post';
 import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';

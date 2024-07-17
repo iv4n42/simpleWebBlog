@@ -56,7 +56,7 @@ export const routes: Routes = [
         path: 'post-read/:postId',
         loadComponent: () =>
             import(
-                './presentational/post-read/post-read/post-read.component'
+                './presentational/post-read/post-read.component'
             ).then((x) => x.PostReadComponent),
         canActivate: [authGuard],
     },
