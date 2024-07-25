@@ -1,21 +1,49 @@
 <section>
-    <h1 id="formHeader">Make Your Post</h1>
-    <div id="formContainer">
-        <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <mat-form-field style="width: 300px;">
-                    <input matInput type="text" placeholder="Title" formControlName="title">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                What are your insights for today, sir ?
+            </mat-card-title>
+            <mat-card-subtitle> Surprise the community ! </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="postForm">
+                <mat-form-field>
+                    <input
+                        matInput
+                        type="text"
+                        placeholder="Post title"
+                        formControlName="title"
+                    />
                 </mat-form-field>
-                <button mat-flat-button color="primary">Post</button>
-            </div>
-            <mat-form-field style="width: 600px;">
-                <textarea matInput placeholder="Description" cdkTextareaAutosize formControlName="description"></textarea>
-            </mat-form-field>
-            <mat-form-field style="width: 600px;display: block;">
-                <textarea matInput placeholder="Start Writing"  cdkTextareaAutosize formControlName="text"></textarea>
-            </mat-form-field>
-          
-        </form>
-    </div>
-    
+                <mat-form-field>
+                    <textarea
+                        matInput
+                        placeholder="Start writing"
+                        cdkTextareaAutosize
+                        formControlName="content"
+                        rows="14"
+                    ></textarea>
+                </mat-form-field>
+                <div class="post-form-buttons">
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        [disabled]="postForm.invalid"
+                        (click)="onSavePostAsDraftBtnClick()"
+                    >
+                        Save post as draft
+                    </button>
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        [disabled]="postForm.invalid"
+                        (click)="onPublishPostBtnClick()"
+                    >
+                        Publish post
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
 </section>

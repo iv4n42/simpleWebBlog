@@ -7,7 +7,7 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () =>
-            import('./components/entry/entry.component').then(
+            import('./presentational/entry/entry.component').then(
                 (x) => x.EntryComponent
             ),
         canActivate: [accountGuard],
@@ -31,7 +31,7 @@ export const routes: Routes = [
     {
         path: 'posts',
         loadComponent: () =>
-            import('./components/post-listing/post-listing.component').then(
+            import('./presentational/post-listing/post-listing.component').then(
                 (x) => x.PostListingComponent
             ),
         canActivate: [authGuard],
@@ -47,9 +47,17 @@ export const routes: Routes = [
     {
         path: 'user-profile',
         loadComponent: () =>
-            import('./components/user-profile/user-profile.component').then(
+            import('./presentational/user-profile/user-profile.component').then(
                 (x) => x.UserProfileComponent
             ),
+        canActivate: [authGuard],
+    },
+    {
+        path: 'post-read/:postId',
+        loadComponent: () =>
+            import(
+                './presentational/post-read/post-read.component'
+            ).then((x) => x.PostReadComponent),
         canActivate: [authGuard],
     },
 ];

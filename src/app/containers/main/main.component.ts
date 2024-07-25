@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { PostListingComponent } from '../../components/post-listing/post-listing.component';
+import { PostListingComponent } from '../../presentational/post-listing/post-listing.component';
 import { PostFormComponent } from '../forms/post-form/post-form.component';
-import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
-import { ToolBarComponent } from '../../components/UI/tool-bar/tool-bar.component';
+import { UserProfileComponent } from '../../presentational/user-profile/user-profile.component';
+import { ToolBarComponent } from '../../presentational/UI/tool-bar/tool-bar.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../shared/services/auth/auth.service';
+import { PostService } from '../../shared/services/domain/post/post.service';
 
 @Component({
     selector: 'app-main',
@@ -24,7 +25,6 @@ import { AuthService } from '../../shared/services/auth/auth.service';
         MatListModule,
         MatButtonModule,
         MatIconModule,
-        RouterOutlet,
         RouterModule,
         CommonModule,
     ],
@@ -36,13 +36,17 @@ export class MainPageComponent implements OnInit {
 
     loggedIn!: boolean;
 
-    constructor(private _authService: AuthService, private _router: Router) {}
+    constructor(
+        private _authService: AuthService,
+        private _router: Router,
+        private _postService: PostService
+    ) {}
 
     ngOnInit() {
         this.loggedIn = this._authService.isUserAuthenticated();
         this._authService.getUserIdFromClaim();
 
-        this._authService.successfulSigninSubject.subscribe({
+        this._authService.successfulSigninValue.subscribe({
             next: () => {
                 this.loggedIn = true;
                 this.sidenav.opened = true;
@@ -50,11 +54,17 @@ export class MainPageComponent implements OnInit {
             },
         });
 
-        this._authService.logoutSubject.subscribe({
+        this._authService.logoutValue.subscribe({
             next: () => {
                 this.loggedIn = false;
                 this.sidenav.opened = false;
                 this._router.navigate(['']);
+            },
+        });
+
+        this._postService.postCreated.subscribe({
+            next: () => {
+                this._router.navigate(['/posts']);
             },
         });
     }
