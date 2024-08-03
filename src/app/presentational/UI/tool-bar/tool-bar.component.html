@@ -14,12 +14,24 @@
         }}</mat-icon>
     </button>
     <span>Deep Daily Insights</span>
-    <mat-form-field *ngIf="loggedIn" style="margin-top: 20px; width: 30%">
-        <mat-icon matIconPrefix>
-            <span class="material-symbols-outlined"> search </span>
-        </mat-icon>
-        <input matInput type="search" placeholder="Search" />
-    </mat-form-field>
+    <form [formGroup]="searchForm" (ngSubmit)="submitSearch()" style="width: 30%;margin-top: 20px;">
+        <mat-form-field *ngIf="loggedIn" style="width: 100%;" >
+            <mat-icon matIconPrefix>
+                <span class="material-symbols-outlined"> search </span>
+            </mat-icon>
+            <input matInput type="search" placeholder="Search" formControlName="search" [matAutocomplete]="auto" (keyup)="filterOptions()"/>
+            <mat-autocomplete #auto="matAutocomplete" style="max-height: 300px; overflow-y: scroll;">
+                @if(_searchService.searchOptions$ | async ; as searchOptions){
+                    @for(option of searchOptions ; track $index){
+                        <mat-option value="{{option}}">{{option}}</mat-option>
+                    }
+    
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button>GO</button>
+    </form>
+   
 
     <div *ngIf="!loggedIn" id="auth-buttons">
         <button mat-raised-button routerLink="signin">Sign In</button>
